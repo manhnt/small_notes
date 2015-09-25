@@ -1,0 +1,7 @@
+Patheon File Manager Installation guide:
+$ sudo add-apt-repository ppa:elementary-os/stable
+$ sudo apt-get update
+$ sudo apt-get install pantheon-files pantheon-files-plugin-ubuntuone pantheon-files-plugin-dropbox
+
+Patheon File Manager:
+https://launchpad.net/pantheon-files

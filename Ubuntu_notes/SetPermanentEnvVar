@@ -1,0 +1,22 @@
+Set permanent environment variable:
+Session-wide environment variables
+
+Suitable files for environment variable settings that should affect just a
+particular user (rather than the system as a whole) are ~/.pam_environment and
+~/.profile. After having edited one of those files, you should re-login in order
+to initialize the variables.
+
+Example: 
+- 1st step: open ~/.pam_environment (create the file if haven't exist). Assign
+new variable:
+APPENED_PATH=/the/path/that/you/want/to/add
+Save the file.
+- 2nd step: open ~/.profile to edit:
+export PATH="$PATH:$APPENDED_PATH"
+
+Save the file. Then to apply the changes right away, run
+$ source .profile
+Check the result:
+$ echo $PATH
+
+Reference: https://help.ubuntu.com/community/EnvironmentVariables

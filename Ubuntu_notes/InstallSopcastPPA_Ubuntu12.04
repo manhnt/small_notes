@@ -1,0 +1,11 @@
+How to install Sopcast on Ubuntu 12.04 via PPA:
+
+$ sudo add-apt-repository ppa:ferramroberto/sopcast
+$ sudo apt-get update
+$ sudo apt-get install sopcast-player
+
+Remove:
+$ sudo add-apt-repository  --remove   ppa:ferramroberto/sopcast
+$ sudo apt-get update
+$ sudo apt-get remove sopcast
+

@@ -1,0 +1,12 @@
+Basic Git commands learned in early days of using Git
+- git init
+- git status
+- git log: view commits history
+- git diff: view diff between files, commits
+- git clone:
+- git config --global color.ui auto: getting colored output in terminal
+- git checkout: checkout a commit
+- git config --global user.name "Your name": config user name
+- git config --global user.email "youremail@domain.com": configure email
+- git config --global core.editor, followed by the command you run to start your editor: configure default editor
+- git add path/: add all file under path/ folder
