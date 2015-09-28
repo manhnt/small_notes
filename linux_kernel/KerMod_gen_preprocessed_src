@@ -1,0 +1,17 @@
+How to generate preprocessed source code of kernel module soure file:
+
+If you only plan to get the preprocessed output of kernel module, don't use
+Makefile, cause Makefiles (sub-make) will try to produce an object file with
+ability to insert into the kernel. Which contradicts with gcc -E, which just
+stops after preprocessing. So, just do the followings by using gcc:
+
+  gcc -E new.c -I$TREE/include -I$TREE/arch/x86/include -I$TREE/include/uapi
+
+where new.c is name of source file.
+-E is to get the preprocessed output, $TREE is the location of your kernel
+tree and if you use other arch then change x86. And we know that, gcc takes
+include dir parameter with -I, so pass all the kernel include dir through -I.
+Hope this helps!
+
+Source:
+http://stackoverflow.com/questions/21177935/kernel-module-source-file-after-preprocessing

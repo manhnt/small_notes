@@ -1,0 +1,52 @@
+To display a output of serial console port of VBox VM connected to a pipe file
+/tmp/vboxS0 on host machine:
+$ nc -U /tmp/vboxS0 # Create and listen on a Unix Domain Socket
+
+Login via serial console (with target machine as Ubuntu 12.04 VBox VM):
+=======================================================================
+- Setting up the target machine:
+    + Enable console login process (follow [SerialConsoleHowto][2] guide):
+    Create a fiel called /etc/init/ttyS0.conf containing:
+    ```
+    # ttyS0 - getty
+    #
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+
+    start on stopped rc RUNLEVEL=[12345] stop on runlevel [!12345]
+
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+    ```
+    Ask upstart to start the getty:
+    $ sudo start ttyS0
+    + Configure kernel boot parameter (as in [this manual][3]):
+    "console=ttyS0,115200"
+    or at runtime:
+    # echo ttyS0 > /sys/module/kgdboc/parameters/kgdboc
+
+- On the host machine:
+    + Install additional tools: socat [to link serial file on host to
+    pseudo-terminal][1], minicom to communicate with target machine via serial
+    console
+    + Linking the serial file to pseudo-terminal: assume that the serial port
+    on target machine is set up to link to host pipe file /tmp/vboxS0:
+    # socat -d -d /tmp/vboxS0 PTY:
+    It returns the pseudo-terminal nummber that allocated, for example /dev/pty/4
+    + Configure minicom: start minicom with -s option to configure:
+    # minicom -s
+    In Serial port setup section, set the following option:
+    ```
+    A - Serial device: /dev/pty/4
+    E - Bps/Par/Bits: 115200 8N1
+    ```
+    In Modem and dialing section, clear the init:
+    ```
+    A - Init String ......
+    ```
+    Save set up as dfl.
+    Start minicom and you will able to login to target machine via serial console.
+
+[1]: http://opensourceforu.efytimes.com/2011/03/kgdb-with-virtualbox-debug-live-kernel/
+[2]: https://help.ubuntu.com/community/SerialConsoleHowto
+[3]: https://www.kernel.org/pub/linux/kernel/people/jwessel/kdb/usingKDB.html#quickKDBserial
