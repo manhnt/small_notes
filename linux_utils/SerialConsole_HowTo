@@ -5,6 +5,9 @@ $ nc -U /tmp/vboxS0 # Create and listen on a Unix Domain Socket
 Login via serial console (with target machine as Ubuntu 12.04 VBox VM):
 =======================================================================
 - Setting up the target machine:
+    + VM configuration in Virtualbox: go to VM's setting page -> Serial port
+    -> Enable port with Port Mode = Host pipe, Port/File Path = /tmp/vboxS0
+
     + Enable console login process (follow [SerialConsoleHowto][2] guide):
     Create a fiel called /etc/init/ttyS0.conf containing:
     ```
@@ -45,7 +48,8 @@ Login via serial console (with target machine as Ubuntu 12.04 VBox VM):
     A - Init String ......
     ```
     Save set up as dfl.
-    Start minicom and you will able to login to target machine via serial console.
+    Start minicom and you will able to login to target machine via serial console
+    (you may need to press Enter to see something happen).
 
 [1]: http://opensourceforu.efytimes.com/2011/03/kgdb-with-virtualbox-debug-live-kernel/
 [2]: https://help.ubuntu.com/community/SerialConsoleHowto

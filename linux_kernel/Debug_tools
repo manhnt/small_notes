@@ -1,0 +1,8 @@
+Some debug techniques and tools for debugging live kernel
+
+1. GDB with KGDB and QEMU
+2. Kprobes/dprobes: dynamic "break points"
+3. Linux kernel crash dump (LKCD)
+4. Linux Trace Toolkit (LTT)
+5. ftrace and trace_printk()
+6. Oops message
