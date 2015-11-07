@@ -1,0 +1,42 @@
+SDN Beginner Tutorial with OpenFlow, Openvswitch, Mininet and POX Controller
+============================================================================
+
+1. Installing and configuring Openvswitch:
+Openvswitch is used to implement virtual switch which can support OpenFlow.
+The best option is installing from source. The installation guide is on Github
+repo of Openvswitch:
+https://github.com/openvswitch/ovs/blob/master/INSTALL.md
+
+After installation, run following command before creating topo in Mininet:
+% ovsdb-server --remote=punix:/usr/local/var/run/openvswitch/db.sock \
+                 --remote=db:Open_vSwitch,Open_vSwitch,manager_options \
+                 --private-key=db:Open_vSwitch,SSL,private_key \
+                 --certificate=db:Open_vSwitch,SSL,certificate \
+                 --bootstrap-ca-cert=db:Open_vSwitch,SSL,ca_cert \
+                 --pidfile --detach
+% ovs-vsctl --no-wait init
+% ovs-vswitchd --pidfile --detach
+
+2. Installing Mininet
+Mininet is a tool for creating virtual network topology on local computer.
+Installing it is easy: $ sudo apt-get install mininet
+There's an OpenFlow tutorial using Mininet at:
+https://github.com/mininet/openflow-tutorial/wiki
+https://github.com/mininet/openflow-tutorial/wiki/Learn-Development-Tools
+
+3. Install POX controller
+POX is a simple SDN controller, written in Python.
+Just download POX from Git repo: https://github.com/noxrepo/pox
+
+Some tutorial for POX:
+http://sdnhub.org/tutorials/pox/
+
+4. Creating network topo
+- Use Mininet to create a simple network topo on the machine which has
+Openvswitch installed, and connect the controller (POX) which is running on
+another machine:
+ $ sudo mn --topo single,3 --mac --switch ovsk --controller=remote,ip=\
+[controller_ip],port=[controller_listening_port]
+
+By default, OpenFlow controller is listening on TCP port 6633 (this is changed
+from version 1.4.0 which uses TCP port 6653).

@@ -1,0 +1,21 @@
+Linux Kernel Design Patterns
+============================
+
+Resources:
+~~~~~~~~~
+Linux kernel design patterns series on LWN:
+[1] http://lwn.net/Articles/336224/
+[2] http://lwn.net/Articles/336255/
+[3] http://lwn.net/Articles/336262/
+
+1. Reference Counts
+===================
+To have a counter to manage the life time of an object: the counter is incremented
+when a new referecne is taken and decremented when a reference is released.
+Data type: kref (Documentation/kref.txt, <linux/kref.h>, lib/kref.c).
+
+2. Abstract Data Types
+======================
+Abstract >< Detail
+Performance >< Clean separation
+-> data type must not be overly abstracted, not to hide details.

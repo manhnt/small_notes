@@ -1,0 +1,10 @@
+1. Generate C header file and source file from a Java class file
+================================================================
+Use the javah command:
+$ javah -jni <fully-qualified-class-name>
+(-jni option tells the commadn to create an file containing JNI-style native
+ method function prototypes. It is enable by default).
+For example, fully-qualified name of your class file is com.example.YourFile.class,
+and your directory structure is <user>/java/project/com/example/YourFile.class,
+you need to run the following command from the <user>/java/project/ directory:
+$ javah -jni com.example.YourFile

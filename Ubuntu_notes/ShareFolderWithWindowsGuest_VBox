@@ -6,4 +6,5 @@ Sharing folder between Ubuntu host and Windows guest in VirtualBox:
 - Select "Add" button -> Select the folder you'd like to share (~/share_folder) -> "Ok"
 - In Windows guest machine, run command:
 	net use x: \\vboxsvr\share_folder
-where "x" is the name of the drive with virtual folder.
+where "x" is the name of the drive with virtual folder, "share_folder" is the
+name set in VBox machine settings.
