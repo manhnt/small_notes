@@ -1,0 +1,87 @@
+I. Regex syntax used in grep
+============================
+Grep uses regex to find matching pattern by default. To tell grep not to
+interpret search pattern as regex, use -F or --fixed-strings option.
+
+Another important note is that normally, the arguments passed to grep are
+processed by the shell before they are given to grep [2]. You can always use
+echo to see what the shell does:
+```
+$ echo grep 'patt\w*n' my_file  # w/ quote marks surrouding search pattern
+grep patt\w*n my_file
+$ echo grep patt\w*n my_file    # w/o quote marks surrouding search pattern
+grep pattw*n my_file
+```
+So the arguments given to grep may be different between having and not having
+quote marks surrounding them. It depends on the shell you're running.
+The different between using SINGLE quotes and DOUBLE quotes for enclosing
+search pattern is, again, dependent on the shell. Normally, double quotes allow
+variable expansion, history expansion, brace expansion and filename expansion
+while with single quotes the pattern is taken as string literal and no
+expansion takes place [2]. Be sure to check your shell documentation.
+
+BRE vs ERE:
+===========
+In GNU grep, the available functionalities of basic (BRE) and extended (ERE)
+are similar. Other implementations of grep may have BRE less powerful than ERE.
+In BRE mode, the meta-characters ?, +, {, |, (, and ) LOSE their special
+meanings; so use the backslased versions ( \?, \+, etc.) instead.
+To use ERE to interpret pattern, use -E option.
+
+The period '.' character mathces any SINGLE character.
+
+Repetition:
+===========
+?       Match 0 or at most 1 occurence of the preceding item.
+*       Match 0 or more occurences of the preceding item.
++       Match 1 or more occurences of the preceding item.
+{n}     Match exactly n occurences of the preceding item.
+{n,}    Match n or more occurences of the preceding item.
+{,n}    Match at most n occurences of the preceding item.
+{n,m}   Match at least n, but not more than m occurences of the preceding item.
+
+Anchoring
+=========
+The caret character '^' match beginning of line.
+The dollar sign '$' match end of line.
+
+Backslash character & Special Expressions
+=========================================
+\< and \> match beginning and end of a word, respectively.
+\b matches edge of a word.
+\w matchs a word character (letter, number, underscore).
+\W matchs a non-word character (negation of \w).
+
+Character Classes and Bracket Expressions
+=========================================
+A bracket expression = a list of characters inside a [ and ] pair. It matches
+any SINGLE character in that list.
+Range expression consists of 2 character separated by a hyphen '-' within a
+bracket expression. For example: [a-d] 
+Some predefined character classes: [:alnum:], [:alpha:], [:digit:], [:cntrl:],
+[:lower:], [:upper:], [:space:], [:punct:].
+To include a literal ']', place it 1st in the list of bracket expression.
+To include a literal '^', DON'T place it 1st in the list.
+To include a literal '-', place it last in the list.
+
+Alternation
+===========
+Use the OR operator '|' to join 2 regex, the resulting regex will match any
+string matching EITHER alternate expression.
+
+II. Useful Options
+==================
+-E
+    Use ERE for regex
+-F, --fixed-string
+    Intepret PATTERN as literal string (not use regex).
+--include=\*.{c,h}
+    Only search in files whose names end with .c or .h
+--exclude=GLOB
+    As oppose to --include
+
+REFERENCES
+==========
+[1] grep's man page
+[2] http://serverfault.com/questions/69283/when-to-use-single-quote-double-quote-in-grep
+[3] http://stackoverflow.com/questions/3008423/quotes-when-using-grep
