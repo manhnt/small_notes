@@ -1,5 +1,5 @@
 How to install Sopcast on Ubuntu 12.04 via PPA:
-
+==============================================
 $ sudo add-apt-repository ppa:ferramroberto/sopcast
 $ sudo apt-get update
 $ sudo apt-get install sopcast-player
@@ -9,3 +9,27 @@ $ sudo add-apt-repository  --remove   ppa:ferramroberto/sopcast
 $ sudo apt-get update
 $ sudo apt-get remove sopcast
 
+Installing Sopcast on Ubuntu 14.04 manually
+===========================================
+First, install sp-auth:
+$ wget http://download.sopcast.com/download/sp-auth.tgz
+$ tar -xvzf sp-auth.tgz
+$ sudo cp ./sp-auth/sp-sc-auth /usr/bin/sp-sc
+$ sudo cp ./sp-auth/sp-sc-auth /usr/local/bin/sp-sc
+
+Check sp-sc:
+$ sp-sc
+If there is error because libstdc++5 is missing, install libstdc++5 manually:
+$ wget http://www.sopcast.com/download/libstdcpp5.tgz 
+$ tar -xvzf libstdcpp5.tgz
+$ sudo cp -a ./usr/lib/libstdc++.so.5* /usr/lib/
+Also need to install gettext and python-glade2 if they are not installed (by apt-get install)
+Download and install sopcast-player:
+$ wget http://sopcast-player.googlecode.com/files/sopcast-player-0.8.5.tar.gz
+$ tar -xvzf sopcast-player-0.8.5.tar.gz 
+$ cd sopcast-player/
+$ make
+$ sudo make install
+Run sopcast-player from command line:
+$ sopcast-player
+(Link: https://mauriziosiagri.wordpress.com/tag/sopcast/)

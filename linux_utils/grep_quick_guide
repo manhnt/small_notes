@@ -6,12 +6,11 @@ interpret search pattern as regex, use -F or --fixed-strings option.
 Another important note is that normally, the arguments passed to grep are
 processed by the shell before they are given to grep [2]. You can always use
 echo to see what the shell does:
-```
-$ echo grep 'patt\w*n' my_file  # w/ quote marks surrouding search pattern
-grep patt\w*n my_file
-$ echo grep patt\w*n my_file    # w/o quote marks surrouding search pattern
-grep pattw*n my_file
-```
+    $ echo grep 'patt\w*n' my_file  # w/ quote marks surrouding search pattern
+      grep patt\w*n my_file
+    $ echo grep patt\w*n my_file    # w/o quote marks surrouding search pattern
+      grep pattw*n my_file
+
 So the arguments given to grep may be different between having and not having
 quote marks surrounding them. It depends on the shell you're running.
 The different between using SINGLE quotes and DOUBLE quotes for enclosing
@@ -79,6 +78,16 @@ II. Useful Options
     Only search in files whose names end with .c or .h
 --exclude=GLOB
     As oppose to --include
+
+
+III. Quick tips
+===============
+1. Search and replace
+To replace a string in multiple files, use grep and sed:
+    $ grep -rl matchstring somedir/ | xargs sed -i 's/string1/string2/g'
+For example, to search for the string 'windows' in all files relative to the
+current directory and replace 'windows' with 'linux' for each occurrence:
+    $ grep -rl 'windows' ./ | xargs sed -i 's/windows/linux/g'
 
 REFERENCES
 ==========
