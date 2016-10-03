@@ -10,6 +10,7 @@ My list of SublimeText Plugins:
 		"theme": "Moka Light.sublime-theme"
 	}
 	```
+	* Material Theme
 3. **Tools & Utilities**
 	* Side​Bar​Enhancements
 	* Shell Turtlestein:
@@ -18,6 +19,12 @@ My list of SublimeText Plugins:
 	* Bracket Highlighter
 	* Sublime​AStyle​Formatter:
 		C/C++/C#/Java code formatter/beautifier with AStyle.
+	* Local History:
+		For maintaining a local history of files
+	* FileDiffs:
+		Show difference between files
+	* SyncedSideBar:
+		sync project sidebar (folder view) with currently active file.
 4. **Preference Settings**
 	* Auto-indent (reformat) code:
 		Select text -> Edit -> Line -> Reindent. To add a key binding for the command, open Preferences -> Key Binding - User, add:

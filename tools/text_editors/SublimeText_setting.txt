@@ -1,0 +1,18 @@
+{
+	"always_show_minimap_viewport": true,
+	"color_scheme": "Packages/Colorsublime - Themes/Capo-Light.tmTheme",
+	"draw_white_space": "all",
+	"font_face": "Inconsolata",
+	"font_size": 11,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"material_theme_appbar_cyan": true,
+	"material_theme_bold_tab": true,
+	"material_theme_compact_panel": true,
+	"material_theme_compact_sidebar": true,
+	"material_theme_tree_headings": true,
+	"material_theme_accent_orange": true,
+	"theme": "Material-Theme-Lighter.sublime-theme"
+}
