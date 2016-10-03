@@ -1,0 +1,116 @@
+            Processes Management in Linux Kernel
+
+I. Processes, Lightweight Processes and Threads
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- A process is an instance of a program in execution. From kernel's POV, a
+process is an entity to which system resources (CPU, mem, etc.) are allocated.
+- When a process is created: it get a (logical) copy of its parent's address
+spacec, executes the next instruction in code. Parent and childs share code
+(text section) but have separate data sections (stack, heap).
+- In multithread applications, a process is composed of several threads.
+- Linux uses lightweight processes (LWP) to support multithread applications. Two
+lightweight processes may share some resources and when one of them modifies
+the shared resources, the other immediately sees the changes -->
+synchronization issues.
+- A thread group is a set of lightweight processes that implement a
+multithreaded application and act as a whole with regards to some system call
+(getpid, kill, exit).
+
+II. Process Descriptor
+~~~~~~~~~~~~~~~~~~~~~~
+Process Descriptor: A task_struct structure contain all information related to
+a single process. (defined in include/linux/sched.h). This structure contains
+many pointers to other data structures.
+
+1. Process State
+================
+The state field in task_struct structure describes the current runnability state of
+the process. Possible task->state are defined in include/linux/sched.h:
+- TASK_RUNNING
+    The process is executing or waiting to be executed.
+- TASK_INTERRUPTIBLE
+    The process is sleeping until some condition becomes true (and at that time
+    it will be put to TASK_RUNNING).
+- TASK_UNINTERRUPTIBLE
+    Like TASK_INTERRUPTIBLE, except that sending a signal to the sleeping
+    process doesn't change its state.
+- TASK_STOPPED
+    Process has been stopped (after receiving SIGSTOP, SIGTSTP, SIGTTIN,
+    SIGTTOU)
+- TASK_TRACED
+    Process is stopped by a debugger.
+2 states can be store both in task->state and task->exit_state (state about
+task exitting):
+- EXIT_ZOMBIE
+    Process is terminated, but parent process hasn't issued a wait() or
+    waitpid() call to return info about the dead process. Before the wait() is
+    called, the kernel can not discard the data in dead process descriptor
+    because the parent might need it.
+- EXIT_DEAD
+    Process is being removed by the system because parent has called wait() or
+    waitpid() for it.
+
+The state can be set using simple assignment or kernel macros: set_task_state
+and set_current_state.
+
+2. Identify a process
+=====================
+- RULE: each execution context that can be independently scheduled must have its
+own process descriptor.
+
+- Process descriptor pointers: addresses of the task_struct structures is used
+for the kernel to identify processes. Most references to the processes the
+kernel makes through the process descriptor pointer.
+
+- The pid field in task_struct: the process ID, for allowing user to identify
+process. PID is numbered sequentially. The default maximum PID is
+(PID_MAX_DEFAULT - 1) (include/linux/threads.h). User can change the maximum
+PID value by writing to /proc/sys/kernel/pid_max.
+Linux asscociates each PID with each (lightweight) process. On the other hand,
+users expect threads in same group have a common PID.
+---> Linux uses threads groups: the common PID is PID of thread group leader
+(the 1st LWP in the group) and it's store in task->tgid field.
+(so getpid() returns the value of tgid of current descriptor).
+
+* Process Descriptor Handling
+For each process, Linux packs 2 data structures in 1 single per-process memory
+area: thread_info structure (linked to the process descriptor) and the Kernel
+Mode process stack (figure below).
+
+0x015fbfff +----------------------+
+           | +------------------+ |
+           | |                  | |
+           | |      stack       | |
+           | |        +         | |
+           | |        |         | |
+           | |        |         | |
+           | |        |         | |                   +----------------+
+           | |        v         | |                   |                |
+           | |                  | |                   | Process        |
+0x015fa878 | +------------------+ | <---+esp          | Descriptor     |
+           |                      |             +------+               |
+           |   +--------------+   |             |     |                |
+           |   | thread_info +----------------------> +----------------+
+           |   |  structure   |   |             |
+           |   +--------------+   | <-----------+
+0x015fa000 +----------------------+  current
+
+The esp register points to top of stack, which is the byte immediately
+following the stack right after switch from User mode -> Kernel mode. The esp
+reg is decreased when data is written to the stack. Kernel uses thread_union
+structure to pack the kernel stack and thread_info structure:
+union thread_union {
+    struct thread_info thread_info;
+    unsigned long stack[THREAD_SIZE/sizeof(long)];
+}
+
+* Identifying current process
+The kernel can obtain the address of the thread_info structure of the process
+currently running on a CPU from the value of esp register: if the thread_union
+structure is 8KB, the base addr of thread_info structure is value of esp reg
+masked out 13 LSBs.
+
+REFERENCES
+~~~~~~~~~~
+[1] Understanding the Linux Kernel, 3rd Edition, Chapter 3.
+
